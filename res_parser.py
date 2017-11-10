@@ -14,6 +14,7 @@ class HtmlParser(object):
 		#查找简要内容
 		contents = soup.select('div.content p')
 
+		listDatas=[]#创建列表用于储存
 		#筛选信息
 		for title,picture,content_text in zip(titles,pictures,contents):
 			data={
@@ -22,3 +23,6 @@ class HtmlParser(object):
 				'content_text':content_text.get_text().replace("\n",""),
 			}
 			print(data)
+			listDatas.append(data)
+		
+		return listDatas

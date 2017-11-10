@@ -1,6 +1,6 @@
 import sys;
 sys.path.append("E:\PythonSpace\Spider_JianShu")
-import html_downloader,res_parser,url_manager
+import html_downloader,res_parser,url_manager,html_file
 import time
 
 class Spider(object):
@@ -9,6 +9,7 @@ class Spider(object):
 		self.urls=url_manager.UrlManager()
 		self.downloder=html_downloader.HtmlDownloader()
 		self.parser=res_parser.HtmlParser()
+		self.file=html_file.HtmlWrite()
 
 	def begin(self,my_urls):
 		while 1:
@@ -18,8 +19,13 @@ class Spider(object):
 					next_url=self.urls.getNextUrl()
 					print('\n爬取 %s'%(next_url))
 					html_content=self.downloder.download(next_url)#下载页面
-					self.parser.parser(html_content)#解析并打印
+					listOutput=self.parser.parser(html_content)#解析并打印
 					#self.urls.addNextUrl(my_urls)
+					outPut=self.file.openFile('E:\PythonSpace\Spider_JianShu\outPut','r+')
+					for line in listOutput:
+						outPut.write(repr(line)+"\n"+"\n")#输出到文件
+					outPut.write("\n"+"\n"+"\n")
+					outPut.close()#关闭文件
 				except:
 					print("爬取失败")
 			time.sleep(10)
